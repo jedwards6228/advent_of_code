@@ -3,7 +3,7 @@ slope_list = ['1,1', '3,1', '5,1', '7,1', '1,2']
 
 
 def create_input_list():
-    input_list = list(open(input_file).readlines())  # Create a list with each line
+    input_list = open(input_file).readlines()  # Create a list with each line
     for index, x in enumerate(input_list):  # Clean the \n out of every entry
         input_list[index] = x.strip('\n')
     return input_list
@@ -12,8 +12,7 @@ def create_input_list():
 def find_dimensions(input_list, x_rule):
     y_max = len(input_list)
     line_len = len(input_list[0])
-    x_max = y_max * x_rule + (line_len - ((y_max * x_rule) % line_len))
-    # Adds to y_max * x_rule to make it evenly divisible by line_len
+    x_max = y_max * x_rule + (line_len - ((y_max * x_rule) % line_len))  # Adds to y_max * x_rule to make it evenly divisible by line_len
     x_multiplier = x_max / line_len
     return x_max, y_max, x_multiplier
 
