@@ -1,6 +1,6 @@
 import re
 
-input_file = 'input.txt'
+input_file = 'test.txt'
 req_list = ['byr:', 'iyr:', 'eyr:', 'hgt:', 'hcl:', 'ecl:', 'pid:']
 opt_list = ['cid:']
 field_dict = {
@@ -21,46 +21,35 @@ def create_passport_list():
     return passport_list
 
 
-"""
-def check_passport():
-    passport_list = create_passport_list()
-    valid_count = 0
-    for passport in passport_list:
-        req = True
-        for req in req_list:
-            if req not in passport:
-                req = False
-                break
-        if req:
-            valid_count += 1
-    return valid_count
-"""
-
-
-# rewrite
 def check_passport(part):
     passport_list = create_passport_list()
     valid_req_count = 0
     valid_passport_count = 0
+    passport_itter = 0      # for testing
     for passport in passport_list:
-        req = True
+        passport_itter += 1      # for testing
+        all_req = True
         for req in req_list:
             if req not in passport:
-                req = False
+                all_req = False
                 break
-        if req:
+        if all_req:
             valid_req_count += 1
             passport = passport.replace(' ', '\n')
             field_list = passport.split('\n')
             for field in field_list:
+                if not re.search('[a-z]{3}:', field):
+                    break
                 code = str(field[0] + field[1] + field[2] + field[3])
                 input = field.replace(code, '')
                 status = exec(field_dict[code])
                 if status == 'valid':
                     valid_passport_count += 1
+                    print(f'{code} is valid on passport {passport_itter}')      # for testing
                 if status == 'unknown':
-                    print('validation check resulted in an unknown status')
+                    print(f'{code} is unknown on passport {passport_itter}')      # for testing
                 if status == 'invalid':
+                    print(f'{code} is invalid on passport {passport_itter}')      # for testing
                     break
     if part == 1:
         return valid_req_count
@@ -126,7 +115,11 @@ def validate_hgt(input):
 
 # hcl = a "#" followed by 6 characters (0-9 or a-f)
 def validate_hcl(input):
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< This is the last one?!
+    status = 'unknown'
+    if re.search('#[0-9a-f]{6}', input):
+        status = 'valid'
+    if not re.search('#[0-9a-f]{6}', input):
+        status = 'invalid'
     return status
 
 
