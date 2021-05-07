@@ -20,7 +20,7 @@ def create_passport_list():
     passport_list = passport_string.split('\n\n')  #Creates a list split by each blank line
     return passport_list
 
-
+"""
 def check_passport():
     passport_list = create_passport_list()
     valid_count = 0
@@ -33,67 +33,102 @@ def check_passport():
         if req:
             valid_count += 1
     return valid_count
+"""
 # rewrite
-def check_passport():
+def check_passport(part):
     passport_list = create_passport_list()
+    valid_req_count = 0
+    valid_passport_count = 0
     for passport in passport_list:
-        passport = passport.replace(' ', '\n')
-        field_list = passport.split('\n')
-        for field in field_list:
-            code = str(field[0] + field[1] + field[2] + field[3])
-            input = field.replace(code, '')
-            exec(field_dict[code])  # <<<<< CURRENTLY TRYING TO EXECUTE A FUNC FROM A DICT AND PASS THE INPUT INTO IT
-
-    pass
-
-
-print(f"The number of valid passports is {check_passport()}")
-
-
-
-# function to count characters for individual rules
-def count_characters(input):
-    return len(input)
+        req = True
+        for req in req_list:
+            if req not in passport:
+                req = False
+                break
+        if req:
+            valid_req_count += 1
+            passport = passport.replace(' ', '\n')
+            field_list = passport.split('\n')
+            for field in field_list:
+                code = str(field[0] + field[1] + field[2] + field[3])
+                input = field.replace(code, '')
+                status = exec(field_dict[code])
+                if status == 'valid':
+                    valid_passport_count += 1
+                if status == 'unknown':
+                    print('validation check resulted in an unknown status')
+                if status == 'invalid':
+                    break
+    if part == 1:
+        return valid_req_count
+    if part == 2:
+        return valid_passport_count
 
 
 # byr = 4 digits; low = 1920; high = 2002
 def validate_byr(input):
-    pass
+    status = 'unknown'
+    if 1920 <= int(input) <= 2002:
+        status = 'valid'
+    if 1920 > int(input) > 2002:
+        status = 'invalid'
+    if len(input) != 4:
+        status = 'invalid'
+    return status
 
 
 # iyr = 4 digits; low = 2010; high = 2020
 def validate_iyr(input):
-    pass
+    status = 'unknown'
+    if 2010 <= int(input) <= 2020:
+        status = 'valid'
+    if 2010 > int(input) > 2020:
+        status = 'invalid'
+    if len(input) != 4:
+        status = 'invalid'
+    return status
 
 
 # eyr = 4 digits; low = 2020; high = 2030
 def validate_eyr(input):
-    pass
+    status = 'unknown'
+    if 2020 <= int(input) <= 2030:
+        status = 'valid'
+    if 2020 > int(input) > 2030:
+        status = 'invalid'
+    if len(input) != 4:
+        status = 'invalid'
+    return status
 
 
 # hgt = a number followed by "cm" or "in"
 #       if cm: low = 150; high = 193
 #       if in: low = 59; high = 76
 def validate_hgt(input):
-    pass
+    method = input[-2] + input[-1]
+    input = input.replace(method, '')
+    if method = 'cm' and 150 <= int(input) <= 193:
+        status = 'valid'
+        #  <<<<<<<<<< do that again but with inches and then more stuff
+    return status
 
 
 # hcl = a "#" followed by 6 characters (0-9 or a-f)
 def validate_hcl(input):
-    pass
-
+    return status
 
 # ecl = exactly one of: "amb", "blu", "brn", "gry", "grn", "hzl", "oth"
 def validate_ecl(input):
-    pass
+    return status
 
 
 # pid = a nine-digit number including zeroes
 def validate_pid(input):
-    pass
-
+    return status
 
 # cid = ignore
 def validate_cid(input):
-    pass
+    return status
 
+print(f"Part 1: The number of passports that have all requirements is {check_passport(1)}")
+print(f"Part 2: The number valid passports is {check_passport(2)}")
