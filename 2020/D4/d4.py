@@ -17,8 +17,9 @@ field_dict = {
 
 def create_passport_list():
     passport_string = open(input_file).read()
-    passport_list = passport_string.split('\n\n')  #Creates a list split by each blank line
+    passport_list = passport_string.split('\n\n')  # Creates a list split by each blank line
     return passport_list
+
 
 """
 def check_passport():
@@ -34,6 +35,8 @@ def check_passport():
             valid_count += 1
     return valid_count
 """
+
+
 # rewrite
 def check_passport(part):
     passport_list = create_passport_list()
@@ -106,29 +109,53 @@ def validate_eyr(input):
 #       if in: low = 59; high = 76
 def validate_hgt(input):
     method = input[-2] + input[-1]
-    input = input.replace(method, '')
-    if method = 'cm' and 150 <= int(input) <= 193:
+    mod_input = input.replace(method, '')
+    status = 'unknown'
+    if method == 'cm' and 150 <= int(mod_input) <= 193:
         status = 'valid'
-        #  <<<<<<<<<< do that again but with inches and then more stuff
+    if method == 'in' and 59 <= int(mod_input) <= 76:
+        status = 'valid'
+    if method == 'cm' and 150 > int(mod_input) > 193:
+        status = 'invalid'
+    if method == 'in' and 59 > int(mod_input) > 76:
+        status = 'invalid'
+    if method != 'in' or method != 'cm':
+        status = 'invalid'
     return status
 
 
 # hcl = a "#" followed by 6 characters (0-9 or a-f)
 def validate_hcl(input):
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< This is the last one?!
     return status
+
 
 # ecl = exactly one of: "amb", "blu", "brn", "gry", "grn", "hzl", "oth"
 def validate_ecl(input):
+    ecl_list = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
+    status = 'unknown'
+    if input in ecl_list:
+        status = 'valid'
+    if input not in ecl_list:
+        status = 'invalid'
     return status
 
 
 # pid = a nine-digit number including zeroes
 def validate_pid(input):
+    status = 'unknown'
+    if input.isnumeric():
+        status = 'valid'
+    if len(input) != 9:
+        status = 'invalid'
     return status
+
 
 # cid = ignore
 def validate_cid(input):
+    status = 'valid'
     return status
+
 
 print(f"Part 1: The number of passports that have all requirements is {check_passport(1)}")
 print(f"Part 2: The number valid passports is {check_passport(2)}")
