@@ -5,13 +5,13 @@ seat_map = [[int(row * 8 + col) for col in col_range] for row in row_range]
 seat_id_list = []
 
 
-def create_instruction_list(file):
-    bpass_list = open(file).readlines()
+def create_instruction_list():
+    bpass_list = open(input_file).readlines()
     return bpass_list
 
 
 def create_seat_id_list():
-    boarding_pass_list = create_instruction_list(input_file)
+    boarding_pass_list = create_instruction_list()
     for boarding_pass in boarding_pass_list:
         instruction_count = 0
         row_max = len(seat_map)
