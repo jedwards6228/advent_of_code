@@ -32,4 +32,5 @@ Must change bags to bag, remove "contain" and "contain", remove ',' and '.',
 and remove leading/trailing spaces on the key/value before putting it into 
 the dictionary
 May need to remove an '' from the value as well
+Used pop to get the key
 """
