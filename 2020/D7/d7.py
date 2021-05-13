@@ -27,4 +27,9 @@ temp_list = test_dict['a']
 
 would result in:
 temp_list = ['b', 'b', 'c']
+
+Must change bags to bag, remove "contain" and "contain", remove ',' and '.',
+and remove leading/trailing spaces on the key/value before putting it into 
+the dictionary
+May need to remove an '' from the value as well
 """
