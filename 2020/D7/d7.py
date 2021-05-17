@@ -4,6 +4,7 @@ input_file = 'test.txt'
 bag_dict = {}
 expanded_dict = {}
 
+
 # Creates a dictionary where bag color: list(# bag color)
 def create_bag_dict():
     input_list = open(input_file).readlines()
@@ -22,6 +23,7 @@ def create_bag_dict():
         bag_dict[key] = value_list
     return
 
+
 def create_expanded_dict():
     for key in bag_dict.keys():
         value_list = bag_dict[key]
@@ -36,6 +38,7 @@ def create_expanded_dict():
                 new_value_list.append(value)
         expanded_dict[key] = new_value_list
     return
+
 
 create_bag_dict()
 create_expanded_dict()
