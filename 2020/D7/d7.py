@@ -25,17 +25,30 @@ def create_bag_dict():
 
 
 def create_expanded_dict():
+    temp_dict = {}
     for key in bag_dict.keys():
         value_list = bag_dict[key]
-        new_value_list = []
+        new_value_set = set()           #<<<<<<<<<<<gotta make it so there is a set with each basically gonna have to scrap a bunch of shit and redo most of this???? maybe not
         for value in value_list:
             if value[0].isnumeric():
                 multiplier = int(value[0])
                 value = value.strip(f'{multiplier} ')
                 for x in range(multiplier):
-                    new_value_list.append(value)
+                    new_value_set.add(value)
             else:
-                new_value_list.append(value)
+                new_value_set.add(value)
+        temp_dict[key] = new_value_set
+    for key in temp_dict.keys():
+        new_value_set = set(temp_dict[key])
+        for value in new_value_set:
+            if value in temp_dict.keys():
+                for x in temp_dict[value]:
+                    if x in temp_dict.keys():
+                        new_value_set.add(x)
+                    else:
+                        continue
+            else:
+                continue
         expanded_dict[key] = new_value_list
     return
 
