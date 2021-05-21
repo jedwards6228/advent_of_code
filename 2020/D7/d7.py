@@ -1,6 +1,4 @@
-import re
-
-input_file = 'test.txt'
+input_file = 'input.txt'
 bag_dict = {}
 expanded_dict = {}
 
@@ -25,60 +23,53 @@ def create_bag_dict():
 
 
 def create_expanded_dict():
-    temp_dict = {}
     for key in bag_dict.keys():
         value_list = bag_dict[key]
-        new_value_set = set()           #<<<<<<<<<<<gotta make it so there is a set with each basically gonna have to scrap a bunch of shit and redo most of this???? maybe not
+        new_value_set = set()
         for value in value_list:
+            multiplier = 1
             if value[0].isnumeric():
                 multiplier = int(value[0])
-                value = value.strip(f'{multiplier} ')
-                for x in range(multiplier):
-                    new_value_set.add(value)
-            else:
-                new_value_set.add(value)
-        temp_dict[key] = new_value_set
-    for key in temp_dict.keys():
-        new_value_set = set(temp_dict[key])
-        for value in new_value_set:
-            if value in temp_dict.keys():
-                for x in temp_dict[value]:
-                    if x in temp_dict.keys():
-                        new_value_set.add(x)
-                    else:
-                        continue
-            else:
+                value = value.strip(f'{value[0]} ')
+            new_value_set.add(value)
+            if value == 'no other':
                 continue
-        expanded_dict[key] = new_value_list
+            for sub_value in bag_dict[value]:
+                if sub_value == 'no other':
+                    continue
+                for i in range(0, multiplier):
+                    value_list.append(sub_value)
+        expanded_dict[key] = new_value_set
     return
+
+
+def count_bags_containing_target(target):
+    count = 0
+    for key in expanded_dict.keys():
+        if target in expanded_dict[key]:
+            count += 1
+    return count
+
+
+def count_bags_inside_target(target):
+    count = 0
+    value_list = bag_dict[target]
+    print(value_list)
+    for value in value_list:
+        if value == 'no other':
+            continue
+        elif value[0].isnumeric():
+            multiplier = int(value[0])
+            count = count + multiplier
+        else:
+            print('something wrong?')
+    return count
 
 
 create_bag_dict()
 create_expanded_dict()
-print(expanded_dict)
 
 
-
-"""
-test_dict = {
-    'a': ['b', 'b', 'c'],
-    'b': ['c', 'c'],
-    'c': ['a']
-}
-
-This creates a dictionary where keys have 
-lists as values and should work for 
-creating a dictionary of bags and a list 
-of the bags those contain
-
-temp_list = test_dict['a']
-
-would result in:
-temp_list = ['b', 'b', 'c']
-
-Must change bags to bag, remove "contains" and "contain", remove ',' and '.',
-and remove leading/trailing spaces on the key/value before putting it into 
-the dictionary
-May need to remove an '' from the value as well
-Used pop to get the key
-"""
+print(f"The number of bag colors that can contain at least one "
+      f"shiny gold bag is {count_bags_containing_target('shiny gold')} ")
+print(f"The number of bags inside of a single shiny gold bag is {count_bags_inside_target('shiny gold')}")
