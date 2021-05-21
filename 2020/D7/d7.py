@@ -24,12 +24,10 @@ def create_bag_dict():
 
 def create_expanded_dict():
     for key in bag_dict.keys():
-        value_list = bag_dict[key]
+        value_list = bag_dict[key].copy()
         new_value_set = set()
         for value in value_list:
-            multiplier = 1
             if value[0].isnumeric():
-                multiplier = int(value[0])
                 value = value.strip(f'{value[0]} ')
             new_value_set.add(value)
             if value == 'no other':
@@ -37,8 +35,7 @@ def create_expanded_dict():
             for sub_value in bag_dict[value]:
                 if sub_value == 'no other':
                     continue
-                for i in range(0, multiplier):
-                    value_list.append(sub_value)
+                value_list.append(sub_value)
         expanded_dict[key] = new_value_set
     return
 
@@ -53,13 +50,19 @@ def count_bags_containing_target(target):
 
 def count_bags_inside_target(target):
     count = 0
-    value_list = bag_dict[target]
-    print(value_list)
+    value_list = bag_dict[target].copy()
     for value in value_list:
         if value == 'no other':
             continue
         elif value[0].isnumeric():
             multiplier = int(value[0])
+            for i in range(0, multiplier):
+                if bag_dict[value.strip(f'{value[0]} ')] == 'no other':
+                    break
+                for sub_value in bag_dict[value.strip(f'{value[0]} ')]:
+                    if sub_value == 'no other':
+                        break
+                    value_list.append(sub_value)
             count = count + multiplier
         else:
             print('something wrong?')
