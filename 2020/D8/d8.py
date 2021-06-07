@@ -47,8 +47,3 @@ def run_nop(i, acc):
 
 
 print(f"The answer to part 1 is {execute_instruction(0, 0)}.")
-
-
-# acc starts at 0 and runs the inst under it immediately
-# jmp x runs the command x above or below that line
-# nop does nothing and runs the line below it
