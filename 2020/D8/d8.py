@@ -7,6 +7,9 @@ operators = {
     "-": operator.sub,
 }
 
+index_dict = {
+}
+
 
 def execute_instruction(i, acc):
     instruction_index_list = []
@@ -25,18 +28,44 @@ def execute_instruction(i, acc):
     return acc
 
 
-def find_corrupt_operation(i, acc):
+#this needs to return the pt 2 answer
+#this needs to count which instruction is changing
+def fix_corrupt_instruction():
+    populate_index_dict()
+    for index, inst in index_dict:
+        change_inst(index, inst)
+        answer = test_instructions()
+        if answer != False:
+            break
+        change_inst(index, inst) # this will change the instruction back
+    return answer
+
+
+#this will change an instruction from jmp to nop or the other way
+def change_inst(index, inst):
+    operation = inst[:3]
+    tag = inst[3:]
+    if operation == 'jmp':
+        instruction_list[index] = 'nop' + tag
+    elif operation == 'nop':
+        instruction_list[index] = 'jmp' + tag
+    else:
+        print('something is wrong in change_inst')
+    return
+
+
+#this will be similar to the pt 1 code but try to find the result when executing inst at len(instruction_list) + 1
+def test_instructions():
     pass
-# Need to figure out what I want from this and if I need to redo the above function to make it usable for part 2
 
 
-#this should test the result of changing jmp to nop.  If it passes, it'll need to pass an answer specific to part 2
-def nop_test():
-    pass
-
-
-def jmp_test():
-    pass
+def populate_index_dict():
+    for index, inst in enumerate(instruction_list):
+        if inst == 'jmp' or 'nop':
+            index_dict.update({index : inst})
+        else:
+            continue
+    return
 
 
 def run_acc(i, sign, number, acc):
