@@ -1,6 +1,6 @@
 import operator
 
-input_file = 'test.txt'
+input_file = 'input.txt'
 instruction_list = [str(x.strip('\n')) for x in open(input_file).readlines()]
 operators = {
     "+": operator.add,
@@ -30,39 +30,65 @@ def execute_instruction(i, acc):
 
 #this needs to return the pt 2 answer
 #this needs to count which instruction is changing
-def fix_corrupt_instruction():
+def fix_corrupt_instruction(i, acc):
     populate_index_dict()
-    for index, inst in index_dict:
-        change_inst(index, inst)
-        answer = test_instructions()
-        if answer != False:
+    for index, inst in index_dict.items():
+        change_inst(index)
+        answer = test_instructions(i, acc)
+        if answer:
             break
-        change_inst(index, inst) # this will change the instruction back
+        change_inst(index) # this will change the instruction back
     return answer
 
 
 #this will change an instruction from jmp to nop or the other way
-def change_inst(index, inst):
+def change_inst(index):
+    inst = instruction_list[index]
     operation = inst[:3]
     tag = inst[3:]
     if operation == 'jmp':
         instruction_list[index] = 'nop' + tag
+        return
     elif operation == 'nop':
         instruction_list[index] = 'jmp' + tag
+        return
     else:
-        print('something is wrong in change_inst')
+        return
     return
 
 
 #this will be similar to the pt 1 code but try to find the result when executing inst at len(instruction_list) + 1
-def test_instructions():
-    pass
+def test_instructions(i, acc):
+    temp_index_list = []
+    while i < len(instruction_list):
+        if i in temp_index_list:
+            break
+        temp_index_list.append(i)
+        instruction = instruction_list[i]
+        operation = instruction[:3]
+        argument_sign = operators[instruction[4]]
+        argument_number = int(instruction[5:])
+        if operation == 'acc':
+            i, acc = run_acc(i, argument_sign, argument_number, acc)
+        elif operation == 'jmp':
+            i, acc = run_jmp(i, argument_sign, argument_number, acc)
+        elif operation == 'nop':
+            i, acc = run_nop(i, acc)
+    if i == len(instruction_list):
+        return acc
+    elif i > len(instruction_list) or i < 0:
+        return False
+    else:
+        return False
 
 
+#this needs to trim
 def populate_index_dict():
     for index, inst in enumerate(instruction_list):
-        if inst == 'jmp' or 'nop':
-            index_dict.update({index : inst})
+        if str(inst[:3]) == 'jmp':
+            index_dict.update({index: inst})
+        elif inst[:3] == 'nop':
+            index_dict.update({index: inst})
         else:
             continue
     return
@@ -85,4 +111,4 @@ def run_nop(i, acc):
 
 
 print(f"The answer to part 1 is {execute_instruction(0, 0)}.")
-print(f"The answer to part 2 is {}.")
+print(f"The answer to part 2 is {fix_corrupt_instruction(0, 0)}.")
