@@ -28,8 +28,6 @@ def execute_instruction(i, acc):
     return acc
 
 
-#this needs to return the pt 2 answer
-#this needs to count which instruction is changing
 def fix_corrupt_instruction(i, acc):
     populate_index_dict()
     for index, inst in index_dict.items():
@@ -37,11 +35,10 @@ def fix_corrupt_instruction(i, acc):
         answer = test_instructions(i, acc)
         if answer:
             break
-        change_inst(index) # this will change the instruction back
+        change_inst(index)
     return answer
 
 
-#this will change an instruction from jmp to nop or the other way
 def change_inst(index):
     inst = instruction_list[index]
     operation = inst[:3]
@@ -54,10 +51,8 @@ def change_inst(index):
         return
     else:
         return
-    return
 
 
-#this will be similar to the pt 1 code but try to find the result when executing inst at len(instruction_list) + 1
 def test_instructions(i, acc):
     temp_index_list = []
     while i < len(instruction_list):
@@ -82,7 +77,6 @@ def test_instructions(i, acc):
         return False
 
 
-#this needs to trim
 def populate_index_dict():
     for index, inst in enumerate(instruction_list):
         if str(inst[:3]) == 'jmp':
