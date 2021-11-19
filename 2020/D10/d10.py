@@ -16,25 +16,27 @@ def multiply_joltage_differences():
         index += 1
     one_jolt_counter = difference_list.count(1)
     three_jolt_counter = difference_list.count(3)
-    print(ascending_list)
-    print(difference_list)
     return one_jolt_counter * three_jolt_counter
 
 
 def count_adapter_arrangements():
-    pass
+    var_counter = 1
+    index = 0
+    while index < len(ascending_list) - 1:
+        multiplier = 0
+        i = 3
+        while i > 0:
+            if ascending_list[index] + i in ascending_list:
+                multiplier += 1
+            i -= 1
+        if multiplier > 1:
+            var_counter += multiplier
+        index += 1
+    return var_counter
 
 
 print(f"The number of 1-jolt differences multiplied by the "
       f"number of 3-jolt differences is {multiply_joltage_differences()}.")
 print(f"The total number of distinct ways to arrange the adapters is {count_adapter_arrangements()}")
 
-# Part 2
-# We need to have a counter for unique variations
-# We don't need to store them
-# Can skip adapters
-# 1
-# *3
-# *2
-# = 6 + 1 (original) = 7
-# so for each possible adapter, multiply the running split count by that amount
+
