@@ -1,4 +1,4 @@
-input_file = 'test.txt'
+input_file = 'input.txt'
 adapter_list = [int(x.strip('\n')) for x in open(input_file).readlines()]
 adapter_list.insert(0, 0)
 adapter_list.append(max(adapter_list) + 3)
@@ -20,23 +20,23 @@ def multiply_joltage_differences():
 
 
 def count_adapter_arrangements():
-    var_counter = 1
+    variable_counter_list = [1]
+    while len(variable_counter_list) < len(ascending_list):
+        variable_counter_list.append(0)
     index = 0
-    while index < len(ascending_list) - 1:
-        multiplier = 0
-        i = 3
-        while i > 0:
-            if ascending_list[index] + i in ascending_list:
-                multiplier += 1
-            i -= 1
-        if multiplier > 1:
-            var_counter += multiplier
+    while index < len(ascending_list):
+        i = 1
+        max_range = 3
+        while index + max_range > len(ascending_list)-1:
+            max_range -= 1
+        while i <= max_range:
+            if ascending_list[index + i] <= ascending_list[index] + 3:
+                variable_counter_list[index + i] = variable_counter_list[index] + variable_counter_list[index + i]
+            i += 1
         index += 1
-    return var_counter
+    return variable_counter_list[-1]
 
 
 print(f"The number of 1-jolt differences multiplied by the "
       f"number of 3-jolt differences is {multiply_joltage_differences()}.")
 print(f"The total number of distinct ways to arrange the adapters is {count_adapter_arrangements()}")
-
-
