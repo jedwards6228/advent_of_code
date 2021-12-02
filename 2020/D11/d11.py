@@ -58,7 +58,8 @@ def create_adjacent_seat_list(row, seat):
                 continue
             current_row = seat_layout[y - 1]
             adjacent_seat_list.append(current_row[x - 1])
-    if seat == len(seat_layout[0]) - 1:
+            print(current_row, seat, adjacent_seat_list)
+    if seat == len(seat_layout[0]) - 2:
         print(f"adjacent seats are {adjacent_seat_list}")
     return adjacent_seat_list
 
