@@ -9,7 +9,7 @@ def split_on_empty_lines(s):
     return re.split(blank_line_regex, s.strip())
 
 
-input_file = "input.txt"
+input_file = "test.txt"
 with open(input_file) as f:
     # read first line of the file as the draw list
     num_list = f.readline()
@@ -97,5 +97,5 @@ if __name__ == "__main__":
 
 
 """
-Maybe using a class has fucked me over here as I don't know how to create multiple instances and operate them like this
+
 """
