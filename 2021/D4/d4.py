@@ -9,17 +9,6 @@ def split_on_empty_lines(s):
     return re.split(blank_line_regex, s.strip())
 
 
-input_file = "test.txt"
-with open(input_file) as f:
-    # read first line of the file as the draw list
-    num_list = f.readline()
-    num_list = num_list.strip('\n')
-    num_list = num_list.split(',')
-    # create bingo sheet
-    all_bingo_boards = split_on_empty_lines(f.read())
-drawn_num_list = []
-
-
 class BingoBoard:
     def __init__(self, bingo_string):
         # create a matrix from the bingo string
@@ -70,7 +59,7 @@ def create_bingo_boards():
     return board_list
 
 
-def play_bingo(board_list):
+def play_bingo():
     for num in num_list:
         drawn_num_list.append(int(num))
         for index, board in enumerate(board_list):
@@ -83,13 +72,32 @@ def play_bingo(board_list):
     return None
 
 
-def main():
-    board_list = create_bingo_boards()
-    # now just play bingo and if a board returns true, find out which one it is. somehow
-    winner = play_bingo(board_list)
-    score = board_list[winner].sum_unused_numbers(drawn_num_list) * int(drawn_num_list[-1])
-    print(f'The final score of the winning board is {score}.')
+def find_score(board):
+    return board_list[board].sum_unused_numbers(drawn_num_list) * int(drawn_num_list[-1])
+
+
+def find_last_winner():
     return
+
+def main():
+    # now just play bingo and if a board returns true, find out which one it is. somehow
+    first_winner = play_bingo()
+    last_winner = find_last_winner()
+    print(f'The final score of the first winner is {find_score(first_winner)}.')
+    print(f'The final score for the last winner is {find_score(last_winner)}.')
+    return
+
+
+input_file = "test.txt"
+with open(input_file) as f:
+    # read first line of the file as the draw list
+    num_list = f.readline()
+    num_list = num_list.strip('\n')
+    num_list = num_list.split(',')
+    # create bingo sheet
+    all_bingo_boards = split_on_empty_lines(f.read())
+drawn_num_list = []
+board_list = create_bingo_boards()
 
 
 if __name__ == "__main__":
