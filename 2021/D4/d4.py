@@ -9,7 +9,7 @@ def split_on_empty_lines(s):
     return re.split(blank_line_regex, s.strip())
 
 
-input_file = "test.txt"
+input_file = "input.txt"
 with open(input_file) as f:
     # read first line of the file as the draw list
     num_list = f.readline()
@@ -17,6 +17,7 @@ with open(input_file) as f:
     num_list = num_list.split(',')
     # create bingo sheet
     all_bingo_boards = split_on_empty_lines(f.read())
+drawn_num_list = []
 
 
 class BingoBoard:
@@ -25,7 +26,9 @@ class BingoBoard:
         self.bingo_rows = [[int(num) for num in row.split()] for row in bingo_string.split("\n")]
         self.bingo_columns = [[row[i] for row in self.bingo_rows] for i in range(len(self.bingo_rows[0]))]
         self.bingo_diagonals = self.find_diagonals()
-        self.win_conditions = self.bingo_diagonals + self.bingo_rows + self.bingo_columns
+        self.win_conditions_no_diag = self.bingo_rows + self.bingo_columns
+        # this next one is confusing
+        self.num_list = [num for row in self.bingo_rows for num in row]
 
     def find_diagonals(self):
         i = 1
@@ -37,32 +40,55 @@ class BingoBoard:
             i += 1
         return [l_to_r, r_to_l]
 
-    def check_bingo(self, drawn_num_list):
-        for condition in self.win_conditions:
+    def check_bingo(self, draw_list):
+        for condition in self.win_conditions_no_diag:
             for index, num in enumerate(condition):
-                if num not in drawn_num_list:
+                if num not in draw_list:
                     break
                 elif index + 1 == len(condition):
-                    print('Bingo!')
                     return True
                 else:
                     continue
         return False
 
+    def sum_unused_numbers(self, draw_list):
+        unused_list = []
+        for num in self.num_list:
+            if num not in draw_list:
+                unused_list.append(num)
+            else:
+                continue
+        return sum(unused_list)
+
 
 def create_bingo_boards():
-    board_id = 1
+    # I think this is an anonymous list
+    board_list = []
     for board in all_bingo_boards:
-        create_board = f'bingo_board_{board_id} = BingoBoard(all_bingo_boards[0])'
-        exec("bingo_board_1 = 'wow'")
-        print(f'board {board_id} created')
-        board_id += 1
-    print(bingo_board_1)
-    return
+        # creates a bingo board with no variable name and stores it in an index in a list
+        board_list.append(BingoBoard(board))
+    return board_list
+
+
+def play_bingo(board_list):
+    for num in num_list:
+        drawn_num_list.append(int(num))
+        for index, board in enumerate(board_list):
+            check = board.check_bingo(drawn_num_list)
+            if check:
+                return index
+            else:
+                continue
+    print('no bingo :(')
+    return None
 
 
 def main():
-    create_bingo_boards()
+    board_list = create_bingo_boards()
+    # now just play bingo and if a board returns true, find out which one it is. somehow
+    winner = play_bingo(board_list)
+    score = board_list[winner].sum_unused_numbers(drawn_num_list) * int(drawn_num_list[-1])
+    print(f'The final score of the winning board is {score}.')
     return
 
 
