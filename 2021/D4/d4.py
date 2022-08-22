@@ -60,6 +60,7 @@ def create_bingo_boards():
 
 
 def play_bingo():
+    drawn_num_list.clear()
     for num in num_list:
         drawn_num_list.append(int(num))
         for index, board in enumerate(board_list):
@@ -77,10 +78,21 @@ def find_score(board):
 
 
 def find_last_winner():
+    """ +
+    drawn_num_list = num_list.copy()
+    popped_var = None
+    for i in range(len(num_list)
+    popped_var = drawn_num_list.pop()
+    for board in list
+    board.check_bingo(drawn_num_list)
+    if board gets bingo: continue
+    else: temp_num_list.append popped var
+
+    """
     return
 
+
 def main():
-    # now just play bingo and if a board returns true, find out which one it is. somehow
     first_winner = play_bingo()
     last_winner = find_last_winner()
     print(f'The final score of the first winner is {find_score(first_winner)}.')
