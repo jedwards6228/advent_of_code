@@ -33,13 +33,12 @@ class BingoBoard:
         for condition in self.win_conditions_no_diag:
             for index, num in enumerate(condition):
                 if num not in draw_list:
-                    print(f"num = {num} and draw list = {draw_list}")
-                    print(condition)
-                    return False
+                    break
                 elif index + 1 == len(condition):
                     return True
                 else:
                     continue
+        return None
 
     def sum_unused_numbers(self, draw_list):
         unused_list = []
@@ -60,29 +59,27 @@ def create_bingo_boards():
     return board_list
 
 
-def play_bingo():
+def play_bingo(draw_list):
     for num in num_list:
-        drawn_num_list.append(int(num))
+        draw_list.append(int(num))
         for index, board in enumerate(board_list):
-            check = board.check_bingo(drawn_num_list)
+            check = board.check_bingo(draw_list)
             if check:
                 return index
             else:
                 continue
-    print('no bingo :(')
     return None
 
 
 def find_score(board_index, draw_list):
-    score = board_list[board_index].sum_unused_numbers(drawn_num_list) * int(draw_list[-1])
-    drawn_num_list.clear()
+    score = board_list[board_index].sum_unused_numbers(draw_list) * int(draw_list[-1])
     return score
 
 
 def find_last_winner():
     temp_drawn_list = []
     for num in num_list:
-        temp_drawn_list.append(num)
+        temp_drawn_list.append(int(num))
     i = 0
     while i in range(len(num_list)):
         popped_var = temp_drawn_list.pop()
@@ -90,7 +87,7 @@ def find_last_winner():
             bingo = board.check_bingo(temp_drawn_list)
             if bingo:
                 continue
-            else:
+            elif not bingo:
                 temp_drawn_list.append(popped_var)
                 return index, temp_drawn_list
         i += 1
@@ -98,14 +95,14 @@ def find_last_winner():
 
 
 def main():
-    #first_winner = play_bingo()
+    first_winner = play_bingo(drawn_num_list)
     last_winner, loser_draw_list = find_last_winner()
-    #print(f'The final score of the first winner is {find_score(first_winner, drawn_num_list)}.')
+    print(f'The final score of the first winner is {find_score(first_winner, drawn_num_list)}.')
     print(f'The final score for the last winner is {find_score(last_winner, loser_draw_list)}.')
     return
 
 
-input_file = "test.txt"
+input_file = "input.txt"
 with open(input_file) as f:
     # read first line of the file as the draw list
     num_list = f.readline()
@@ -119,8 +116,3 @@ board_list = create_bingo_boards()
 
 if __name__ == "__main__":
     main()
-
-
-"""
-
-"""
