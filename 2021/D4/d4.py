@@ -33,12 +33,13 @@ class BingoBoard:
         for condition in self.win_conditions_no_diag:
             for index, num in enumerate(condition):
                 if num not in draw_list:
-                    break
+                    print(f"num = {num} and draw list = {draw_list}")
+                    print(condition)
+                    return False
                 elif index + 1 == len(condition):
                     return True
                 else:
                     continue
-        return False
 
     def sum_unused_numbers(self, draw_list):
         unused_list = []
@@ -60,7 +61,6 @@ def create_bingo_boards():
 
 
 def play_bingo():
-    drawn_num_list.clear()
     for num in num_list:
         drawn_num_list.append(int(num))
         for index, board in enumerate(board_list):
@@ -73,30 +73,35 @@ def play_bingo():
     return None
 
 
-def find_score(board):
-    return board_list[board].sum_unused_numbers(drawn_num_list) * int(drawn_num_list[-1])
+def find_score(board_index, draw_list):
+    score = board_list[board_index].sum_unused_numbers(drawn_num_list) * int(draw_list[-1])
+    drawn_num_list.clear()
+    return score
 
 
 def find_last_winner():
-    """ +
-    drawn_num_list = num_list.copy()
-    popped_var = None
-    for i in range(len(num_list)
-    popped_var = drawn_num_list.pop()
-    for board in list
-    board.check_bingo(drawn_num_list)
-    if board gets bingo: continue
-    else: temp_num_list.append popped var
-
-    """
-    return
+    temp_drawn_list = []
+    for num in num_list:
+        temp_drawn_list.append(num)
+    i = 0
+    while i in range(len(num_list)):
+        popped_var = temp_drawn_list.pop()
+        for index, board in enumerate(board_list):
+            bingo = board.check_bingo(temp_drawn_list)
+            if bingo:
+                continue
+            else:
+                temp_drawn_list.append(popped_var)
+                return index, temp_drawn_list
+        i += 1
+    return None
 
 
 def main():
-    first_winner = play_bingo()
-    last_winner = find_last_winner()
-    print(f'The final score of the first winner is {find_score(first_winner)}.')
-    print(f'The final score for the last winner is {find_score(last_winner)}.')
+    #first_winner = play_bingo()
+    last_winner, loser_draw_list = find_last_winner()
+    #print(f'The final score of the first winner is {find_score(first_winner, drawn_num_list)}.')
+    print(f'The final score for the last winner is {find_score(last_winner, loser_draw_list)}.')
     return
 
 
