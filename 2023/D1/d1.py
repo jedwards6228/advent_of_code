@@ -17,7 +17,6 @@ def main():
         line_list = list(line)
         part_one += calibration_values(line)
         for character_index, character in enumerate(line_list):
-            # print("character is " + character)
             for w_index, w in enumerate(word_list):
                 temp_index = 0
                 while w[temp_index] == line_list[character_index + temp_index] \
