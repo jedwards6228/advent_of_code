@@ -10,7 +10,7 @@ def calibration_values(line):
 
 
 def main():
-    w_list = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+    word_list = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
     part_one = 0
     part_two = 0
     for line in calibration_document:
@@ -18,7 +18,7 @@ def main():
         part_one += calibration_values(line)
         for character_index, character in enumerate(line_list):
             # print("character is " + character)
-            for w_index, w in enumerate(w_list):
+            for w_index, w in enumerate(word_list):
                 temp_index = 0
                 while w[temp_index] == line_list[character_index + temp_index] and character_index + len(w) <= len(line_list):
                     if temp_index == len(w) - 1:
