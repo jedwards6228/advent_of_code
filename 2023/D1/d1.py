@@ -1,6 +1,7 @@
 import re
+from pathlib import Path
 
-input_file = 'input.txt'
+input_file = Path(__file__).with_name('input.txt')
 calibration_document = [str(x.strip('\n')) for x in open(input_file).readlines()]
 
 
