@@ -32,5 +32,5 @@ def main():
                  f'Part Two: The sum of all calibration values is {part_two}.')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
