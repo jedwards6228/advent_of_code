@@ -27,7 +27,7 @@ def main():
                         line_list[character_index] = str(w_index)
                         break
                     temp_index += 1
-        part_two += calibration_values("".join(line_list))  # solve for part 2
+        part_two += calibration_values(''.join(line_list))  # solve for part 2
     return print(f'Part One: The sum of all calibration values is {part_one}.\n'
                  f'Part Two: The sum of all calibration values is {part_two}.')
 
