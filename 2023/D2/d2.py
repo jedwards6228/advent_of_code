@@ -73,8 +73,6 @@ def main():
             part_two_eval(game, color_dict)
     part_one_sum = sum_game_id(part_one_log)
     part_two_sum = sum_powers(part_two_log)
-
-    
     return print(f'part 1 solution: {part_one_sum}.\n'
                  f'part 2 solutin: {part_two_sum}.')
 
