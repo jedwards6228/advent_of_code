@@ -10,7 +10,7 @@ report_list = [x.strip('\n').split(' ') for x in open(input_file).readlines()]
 max_level_dif = 3
 
 
-def validate_report(report, multiplier, rule):
+def validate_report(report, multiplier):
     
     for i in range(0, len(report)-1):
 
@@ -41,7 +41,7 @@ def process_reports(rule):
             mult = -1
 
         # Try validating the report:
-        valid = validate_report(report, mult, rule)
+        valid = validate_report(report, mult)
 
         # Try adjusted reports for part 2
         if rule > 1:
@@ -49,7 +49,7 @@ def process_reports(rule):
             while i < len(report) and valid == False:
                 adjusted_report = report.copy()
                 adjusted_report.pop(i)
-                valid = validate_report(adjusted_report, mult, rule)
+                valid = validate_report(adjusted_report, mult)
                 i += 1
         safe_reports += valid
 
